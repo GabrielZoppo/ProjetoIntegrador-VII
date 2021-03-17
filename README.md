@@ -2,6 +2,7 @@
 ## Encontros:
 * terça Feira das 20h30 às 22h00min
 * Google Meet
+* 
 
 ## Material Base:
 *
@@ -14,8 +15,9 @@
 * Segunda Chamada:
 * Exame:
 
-## 1ª Atividade:
+## Material Complementar:
 *
 *
 *
-*
+
+
