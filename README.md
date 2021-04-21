@@ -9,7 +9,7 @@
 * Segunda Chamada:
 * Exame:
 
-## primeira avaliação:
+## Primeira avaliação:
  ### Objetivo:
  * Trabalhando com a Plataforma [Konker](http://www.konkerlabs.com/)
   * 1a. Etapa: 
