@@ -29,7 +29,7 @@ import psutil
 import paho.mqtt.client as mqtt
 import json
 
-#informações necessárias para enviar informações para plataforma
+#informações necessárias para enviar dados para plataforma
 client = mqtt.Client()
 client.username_pw_set("t86mto8vulfm", "Nk2DsZHiWpjz")
 client.connect("mqtt.demo.konkerlabs.net", 1883)
