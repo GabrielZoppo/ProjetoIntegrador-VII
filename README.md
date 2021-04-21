@@ -3,24 +3,24 @@
 * terça Feira das 20h30 às 22h00min
 * Google Meet
 
-
-## Material Base:
-*
-*
-*
-
 ## Avaliações:
 * 1ª Avaliação:
 * 2º Avaliação:
 * Segunda Chamada:
 * Exame:
 
-## Material Complementar:
-*
-*
-*
-
-## primeira avaliação 
+## primeira avaliação:
+ ### Objetivo:
+ * Trabalhando com a Plataforma [Konker](http://www.konkerlabs.com/)
+  * 1a. Etapa: 
+    * Objetivo: Publicar dados a partir do computador ou de uma ESP32
+    * Deadline: 20/04/2021
+    * Criar uma conta no Konker
+    * Postar informações sensoriadas por uma biblioteca em Python e/ou Bash
+    * Computador - CPython: exemplo no [Tutorial do Konker](https://konker.atlassian.net/wiki/spaces/DEV/pages/28180518/Guia+de+Uso+da+Plataforma+Konker)
+    * ESP32 - MicroPython: utilizar o exemplo deste [site](https://mjrobot.org/2018/06/13/iot-feito-facil-esp-micropython-mqtt-thingspeak/) (umqtt.simple) - 
+ 
+ ### Resultado:
 * Código Python:
 ~~~python
 import time
@@ -45,5 +45,5 @@ while True:
         print("connection failed")  # Em caso de erro de conexão
         time.sleep(5)
 ~~~
-
+*  Plataforma [Konker](https://demo.konkerlabs.net/registry/devices/p1ck2t84@p1ck2t84/15271e9a-d7f4-40a4-906d-cc546a124b41/events) com as informações enviadas:
 
