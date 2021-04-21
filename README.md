@@ -30,7 +30,7 @@ import json
 
 
 client = mqtt.Client()
-client.username_pw_set("9qe75fqo530o", "8W9sp2NptKNZ")
+client.username_pw_set("t86mto8vulfm", "Nk2DsZHiWpjz")
 client.connect("mqtt.demo.konkerlabs.net", 1883)
 
 while True:
@@ -51,22 +51,25 @@ while True:
     discoD_free = float(round(discoD.free / 1000000000, 2))
 
     try:
-        client.publish("data/9qe75fqo530o/pub/<CPU porcentagem>",
-                        json.dumps({"Cpu porcentagem ": cpu_p, "Unidade": "%"}))
-        client.publish("data/9qe75fqo530o/pub/<CPU frequencia>",
-                       json.dumps({"CPU frequencia": cpu_f, "Unidade": "Hz"}))
-        client.publish("data/9qe75fqo530o/pub/<Memoria>",
-                       json.dumps({"Memória ": mem_available, "Unidade": "GB"}))
-        client.publish("data/9qe75fqo530o/pub/<DiscoC>",
+        #Enviando informações de CPU
+        client.publish("data/t86mto8vulfm/pub/<CPU>",
+                        json.dumps({"Porcentagem de CPU ": cpu_p, "Unidade": "%"}))
+        client.publish("data/t86mto8vulfm/pub/<CPU>",
+                       json.dumps({"Frequência de CPU": cpu_f, "Unidade": "Hz"}))
+
+        #Enviando informações de Memória:
+        client.publish("data/t86mto8vulfm/pub/<Memoria>",
+                       json.dumps({"Memória disponivel ": mem_available, "Unidade": "GB"}))
+
+        #enviando Informações do disco:
+        client.publish("data/t86mto8vulfm/pub/<Disco>",
                        json.dumps({"Disco C livre ": discoC_free, "Unidade": "GB"}))
-        client.publish("data/9qe75fqo530o/pub/<DiscoD>",
+        client.publish("data/t86mto8vulfm/pub/<Disco>",
                        json.dumps({"Disco D livre ": discoD_free, "Unidade": "GB"}))
 
     except:
         print("connection failed")  # Em caso de erro de conexão
         time.sleep(5)
-
-
 ~~~
-*  Plataforma [Konker](https://demo.konkerlabs.net/registry/devices/p1ck2t84@p1ck2t84/a48b4adc-0af3-4370-9dda-629bc938cb21/events) com as informações enviadas:
+*  Plataforma [Konker](https://demo.konkerlabs.net/registry/devices/p1ck2t84@p1ck2t84/0e0e588e-6fb4-49a1-813f-2b39f01dc71d/events) com as informações enviadas:
 
