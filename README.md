@@ -23,28 +23,29 @@
  ### Resultado:
 * Código Python:
 ~~~python
+#Declarando as bibliotecas necessárias:
 import time
 import psutil
 import paho.mqtt.client as mqtt
 import json
 
-
+#informações necessárias para enviar informações para plataforma
 client = mqtt.Client()
 client.username_pw_set("t86mto8vulfm", "Nk2DsZHiWpjz")
 client.connect("mqtt.demo.konkerlabs.net", 1883)
 
 while True:
-    #leitura e tratamento de dados da CPU
+    #leitura e tratamento dos dados da CPU
     cpu_percent = psutil.cpu_percent(interval=1)
     cpu_freq = psutil.cpu_freq(percpu=False)
     cpu_p = float(cpu_percent)
     cpu_f = float(round(cpu_freq.current, 2))
 
-    # leitura de memória:
+    # leitura e tratamento dos dados da memória:
     mem = psutil.virtual_memory()
     mem_available = float(round(mem.available / 1000000000, 2))
 
-    # leitura de disco:
+    # leitura e tratamento dos dados do disco:
     discoC = psutil.disk_usage('C://')
     discoD = psutil.disk_usage('D://')
     discoC_free = float(round(discoC.free / 1000000000, 2))
