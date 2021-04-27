@@ -76,7 +76,7 @@ while True:
 
 ## Segunda parte:
 * Código python
-~~~
+~~~python
 import paho.mqtt.client as mqtt
 import json
 
