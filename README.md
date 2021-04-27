@@ -74,3 +74,25 @@ while True:
 ~~~
 *  Plataforma [Konker](https://demo.konkerlabs.net/registry/devices/p1ck2t84@p1ck2t84/0e0e588e-6fb4-49a1-813f-2b39f01dc71d/events) com as informações enviadas:
 
+## Segunda parte:
+* Código python
+~~~
+import paho.mqtt.client as mqtt
+import json
+
+def on_connect(client, userdata, flags, rc):
+    print("Connected!")
+    client.subscribe("sub/t86mto8vulfm/out")
+
+def on_message(client, data, msg):
+    print(msg.topic + " " + str(msg.payload))
+
+
+client = mqtt.Client()
+client.on_message = on_message
+client.on_connect = on_connect
+client.username_pw_set("t86mto8vulfm", "Nk2DsZHiWpjz")
+client.connect("mqtt.demo.konkerlabs.net", 1883)
+client.loop_forever()
+
+~~~
