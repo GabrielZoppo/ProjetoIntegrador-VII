@@ -96,3 +96,103 @@ client.connect("mqtt.demo.konkerlabs.net", 1883)
 client.loop_forever()
 
 ~~~
+
+## Código python Grafana
+~~~Python
+# Importando bibliotecas
+import datetime
+import time
+import psutil
+import paho.mqtt.client as mqtt
+import json
+import requests
+
+#declarando os identificadores das cidades
+id_Jaguarao = "456277"
+id_Rio_Grande = "455906"
+
+#Função de busca de temperatura
+def buscar_dados(id):
+    request = requests.get(f"https://api.hgbrasil.com/weather?woeid={id}")
+    todo = json.loads(request.content)
+
+    x = datetime.datetime.now().strftime("%d/%m/%Y-%H")
+    date = x.split("-")[0]
+    hour = int(x.split("-")[1])
+
+    if (hour > 6 and hour <= 12):
+        periodo = 'manha'
+    elif (hour > 12 and hour <= 18):
+        periodo = 'tarde'
+    else:
+        periodo = 'noite'
+
+    temp_max = todo['%s' % id]['%s' % date]['%s' % periodo]['temp_max']
+    temp_min = todo['%s' % id]['%s' % date]['%s' % periodo]['temp_min']
+
+    return (temp_max, temp_min)
+
+#fazer a conexão com o broker
+client = mqtt.Client()
+client.username_pw_set("proj7", "integrador@")
+client.connect("142.47.103.158", 1883)
+
+while True:
+    #leitura e tratamento de dados da CPU
+    cpu_percent = psutil.cpu_percent(interval=1)
+    cpu_freq = psutil.cpu_freq(percpu=False)
+    cpu_p = float(cpu_percent)
+    cpu_f = float(round(cpu_freq.current, 2))
+
+    # leitura de memória:
+    mem = psutil.virtual_memory()
+    mem_available = float(round(mem.available / 1000000000, 2))
+
+    # leitura de disco:
+    discoC = psutil.disk_usage('C://')
+    discoD = psutil.disk_usage('D://')
+    discoC_free = float(round(discoC.free / 1000000000, 2))
+    discoD_free = float(round(discoD.free / 1000000000, 2))
+
+    # execução da função para ler as informações de temperatura de Pelotas e Rio Grande
+    temp_maxJ, temp_minJ = buscar_dados(id_Jaguarao)
+    temp_maxR, temp_minR = buscar_dados(id_Rio_Grande)
+
+    try:
+
+
+        #Enviando informações de CPU
+        client.publish("PI7", json.dumps({"id": "Gabriel_cpu", "data": "%f" %cpu_p}))
+
+        #Enviando informações de Memória:
+        client.publish("PI7", json.dumps({"id": "Gabriel_memory", "data": "%f" %mem_available}))
+
+        #enviando Informações do disco:
+        client.publish("PI7", json.dumps({"id": "Gabriel_DiscoC", "data": "%f" %discoC_free}))
+        client.publish("PI7", json.dumps({"id": "Gabriel_DiscoD", "data": "%f" %discoD_free}))
+
+        #enviando Informações da temperatura Pelotas:
+        client.publish("PI7", json.dumps({"id": "Gabriel_temp_max_Jaguarão", "data": "%d" % temp_maxJ}))
+        client.publish("PI7", json.dumps({"id": "Gabriel_temp_min_Jaguarão", "data": "%d" % temp_minJ}))
+
+        # enviando Informações da temperatura Rio Grande:
+        client.publish("PI7", json.dumps({"id": "Gabriel_temp_max_RioGrande", "data": "%d" % temp_maxR}))
+        client.publish("PI7", json.dumps({"id": "Gabriel_temp_min_RioGrande", "data": "%d" % temp_minR}))
+
+        #impressão dos dados do computador
+        print('"id": "Gabriel_cpu", "data": "%f"' %cpu_p)
+        print('"id": "Gabriel_memory", "data": "%f"' %mem_available)
+        print('"id": "Gabriel_DiscoC", "data": "%f"' %discoC_free)
+        print('"id": "Gabriel_DiscoD", "data": "%f"' %discoD_free)
+
+        #impressão dos dados das temperaturas
+        print('"id": "Gabriel_temp_max_Jaguarão", "data": "%d"' % temp_maxJ)
+        print('"id": "Gabriel_temp_min_Jaguarão", "data": "%d"' % temp_minJ)
+        print('"id": "Gabriel_temp_max_RioGrande", "data": "%d"' % temp_maxR)
+        print('"id": "Gabriel_temp_min_RioGrande", "data": "%d"' % temp_minR)
+        time.sleep(60)
+    except:
+        print("connection failed")  # Em caso de erro de conexão
+        time.sleep(5)
+
+~~~
