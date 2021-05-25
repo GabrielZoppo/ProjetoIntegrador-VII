@@ -110,27 +110,16 @@ import requests
 #declarando os identificadores das cidades
 id_Jaguarao = "456277"
 id_Rio_Grande = "455906"
-
+id_Caxias = "12581299"
 #Função de busca de temperatura
 def buscar_dados(id):
     request = requests.get(f"https://api.hgbrasil.com/weather?woeid={id}")
     todo = json.loads(request.content)
 
-    x = datetime.datetime.now().strftime("%d/%m/%Y-%H")
-    date = x.split("-")[0]
-    hour = int(x.split("-")[1])
 
-    if (hour > 6 and hour <= 12):
-        periodo = 'manha'
-    elif (hour > 12 and hour <= 18):
-        periodo = 'tarde'
-    else:
-        periodo = 'noite'
+    temp = todo["results"]["temp"]
 
-    temp_max = todo['%s' % id]['%s' % date]['%s' % periodo]['temp_max']
-    temp_min = todo['%s' % id]['%s' % date]['%s' % periodo]['temp_min']
-
-    return (temp_max, temp_min)
+    return (temp)
 
 #fazer a conexão com o broker
 client = mqtt.Client()
@@ -155,9 +144,9 @@ while True:
     discoD_free = float(round(discoD.free / 1000000000, 2))
 
     # execução da função para ler as informações de temperatura de Pelotas e Rio Grande
-    temp_maxJ, temp_minJ = buscar_dados(id_Jaguarao)
-    temp_maxR, temp_minR = buscar_dados(id_Rio_Grande)
-
+    temp1 = buscar_dados(id_Jaguarao)
+    temp2 = buscar_dados(id_Rio_Grande)
+    temp3 = buscar_dados(id_Caxias)
     try:
 
 
@@ -171,13 +160,15 @@ while True:
         client.publish("PI7", json.dumps({"id": "Gabriel_DiscoC", "data": "%f" %discoC_free}))
         client.publish("PI7", json.dumps({"id": "Gabriel_DiscoD", "data": "%f" %discoD_free}))
 
-        #enviando Informações da temperatura Pelotas:
-        client.publish("PI7", json.dumps({"id": "Gabriel_temp_max_Jaguarão", "data": "%d" % temp_maxJ}))
-        client.publish("PI7", json.dumps({"id": "Gabriel_temp_min_Jaguarão", "data": "%d" % temp_minJ}))
+        #enviando Informações da temperatura Jaguarão:
+        client.publish("PI7", json.dumps({"id": "Gabriel_tempJaguarao", "data": "%d" % temp1}))
+
 
         # enviando Informações da temperatura Rio Grande:
-        client.publish("PI7", json.dumps({"id": "Gabriel_temp_max_RioGrande", "data": "%d" % temp_maxR}))
-        client.publish("PI7", json.dumps({"id": "Gabriel_temp_min_RioGrande", "data": "%d" % temp_minR}))
+        client.publish("PI7", json.dumps({"id": "Gabriel_tempRioGrande", "data": "%d" % temp2}))
+
+        # enviando Informações da temperatura Rio Grande:
+        client.publish("PI7", json.dumps({"id": "Gabriel_tempCaxias", "data": "%d" % temp3}))
 
         #impressão dos dados do computador
         print('"id": "Gabriel_cpu", "data": "%f"' %cpu_p)
@@ -186,13 +177,11 @@ while True:
         print('"id": "Gabriel_DiscoD", "data": "%f"' %discoD_free)
 
         #impressão dos dados das temperaturas
-        print('"id": "Gabriel_temp_max_Jaguarão", "data": "%d"' % temp_maxJ)
-        print('"id": "Gabriel_temp_min_Jaguarão", "data": "%d"' % temp_minJ)
-        print('"id": "Gabriel_temp_max_RioGrande", "data": "%d"' % temp_maxR)
-        print('"id": "Gabriel_temp_min_RioGrande", "data": "%d"' % temp_minR)
+        print('"id": "Gabriel_temp_Jaguarao", "data": "%d"' % temp1)
+        print('"id": "Gabriel_temp_RioGrande", "data": "%d"' % temp2)
+        print('"id": "Gabriel_temp_Caxias", "data": "%d"' % temp3)
         time.sleep(60)
     except:
         print("connection failed")  # Em caso de erro de conexão
         time.sleep(5)
-
 ~~~
