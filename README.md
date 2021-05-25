@@ -123,7 +123,7 @@ def buscar_dados(id):
 
 #fazer a conexão com o broker
 client = mqtt.Client()
-client.username_pw_set("proj7", "integrador@")
+client.username_pw_set("####", "###########")
 client.connect("142.47.103.158", 1883)
 
 while True:
