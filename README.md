@@ -150,23 +150,23 @@ while True:
     tempC = buscar_dados(id_Caxias)
     
     try:
-        #Enviando informações de CPU
+        #Enviando informações da CPU
         client.publish("PI7", json.dumps({"id": "Gabriel_cpu", "data": "%f" %cpu_p}))
 
-        #Enviando informações de Memória:
+        #Enviando informações da Memória:
         client.publish("PI7", json.dumps({"id": "Gabriel_memory", "data": "%f" %mem_available}))
 
         #enviando Informações do disco:
         client.publish("PI7", json.dumps({"id": "Gabriel_DiscoC", "data": "%f" %discoC_free}))
         client.publish("PI7", json.dumps({"id": "Gabriel_DiscoD", "data": "%f" %discoD_free}))
 
-        #enviando Informações da temperatura Jaguarão:
+        #enviando Informações da temperatura de Jaguarão:
         client.publish("PI7", json.dumps({"id": "Gabriel_tempJaguarao", "data": "%d" % tempJ}))
 
-        # enviando Informações da temperatura Rio Grande:
+        # enviando Informações da temperatura de Rio Grande:
         client.publish("PI7", json.dumps({"id": "Gabriel_tempRioGrande", "data": "%d" % tempR}))
 
-        # enviando Informações da temperatura Caxias:
+        # enviando Informações da temperatura de Caxias:
         client.publish("PI7", json.dumps({"id": "Gabriel_tempCaxias", "data": "%d" % tempC}))
 
         #impressão dos dados do computador
@@ -179,7 +179,7 @@ while True:
         print('"id": "Gabriel_temp_Jaguarao", "data": "%d"' % tempJ)
         print('"id": "Gabriel_temp_RioGrande", "data": "%d"' % tempR)
         print('"id": "Gabriel_temp_Caxias", "data": "%d"' % tempC)
-        time.sleep(60)
+        time.sleep(60) #mandar as informações a cada minuto/evitar spam de dados
     except:
         print("connection failed")  # Em caso de erro de conexão
         time.sleep(5)
