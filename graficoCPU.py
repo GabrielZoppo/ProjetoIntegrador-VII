@@ -28,7 +28,7 @@ def on_message(client, userdata, msg):
         print('Enviando ao Banco de dados Grafite: %s' % message)
 
         # fazer conexão como o postgres
-        con = psycopg2.connect(host='localhost', database='postgres', user='projeto', password='!int7@')
+        con = psycopg2.connect(host='localhost', database='postgres', user='projeto', password='#####')
         cur = con.cursor()
         dt = datetime.now(timezone.utc)
         insertline = "INSERT INTO gabriel (id, nome_sensor, valor, data_pub)"
@@ -43,6 +43,7 @@ def on_message(client, userdata, msg):
         cur.execute(insertline, values)
 
         con.commit()
+	con.close()
         time.sleep(60)  # mandar as informações a cada minuto/evitar spam de dados
 
     except:
